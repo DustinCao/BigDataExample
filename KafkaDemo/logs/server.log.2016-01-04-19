@@ -1,0 +1,5 @@
+[2016-01-04 19:00:04,971] WARN Reconnect due to socket error: null (kafka.consumer.SimpleConsumer)
+[2016-01-04 19:00:46,203] WARN Reconnect due to socket error: null (kafka.consumer.SimpleConsumer)
+[2016-01-04 19:03:29,036] WARN Reconnect due to socket error: null (kafka.consumer.SimpleConsumer)
+[2016-01-04 19:05:49,050] WARN Reconnect due to socket error: null (kafka.consumer.SimpleConsumer)
+[2016-01-04 19:07:03,536] WARN Reconnect due to socket error: null (kafka.consumer.SimpleConsumer)
