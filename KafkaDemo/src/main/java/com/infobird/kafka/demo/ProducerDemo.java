@@ -44,7 +44,7 @@ public class ProducerDemo {
         	String msg = "label1;label2;label3;label4;label5";
         	
         	//ip作为key 根据key来选择不同的分区
-        	KeyedMessage<String, String> data = new KeyedMessage<String, String>("topic_test_10000", ip, msg);
+        	KeyedMessage<String, String> data = new KeyedMessage<String, String>("test_streaming_1", ip, msg);
         	producer.send(data);
         }
         

@@ -44,6 +44,8 @@ public static void main(String[] args) {
         //产生并发送消息
         long start = System.currentTimeMillis();
         
+        List<User> users = new ArrayList<User>();
+        
         User user1 = new User();
 		user1.setName(new Utf8("曹帅"));
 		user1.setAge(new Utf8("12"));
@@ -52,28 +54,82 @@ public static void main(String[] args) {
 		user2.setName(new Utf8("xuzili"));
 		user2.setAge(new Utf8("13"));
 		user2.setGender(new Utf8("Male"));
+		User user3 = new User();
+		user3.setName(new Utf8("LiLy"));
+		user3.setAge(new Utf8("13"));
+		user3.setGender(new Utf8("Male"));
+		
+		User user4 = new User();
+		user4.setName(new Utf8("Lucy"));
+		user4.setAge(new Utf8("13"));
+		user4.setGender(new Utf8("Male"));
+		
+		User user5 = new User();
+		user5.setName(new Utf8("zhangsan"));
+		user5.setAge(new Utf8("13"));
+		user5.setGender(new Utf8("Male"));
+		
+		users.add(user1);
+		users.add(user2);
+		users.add(user3);
+		users.add(user4);
+		users.add(user5);
+		
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		
 		BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(out, null);
 		DatumWriter<User> datumWriter = new SpecificDatumWriter<User>(User.class);
 		try {
-			datumWriter.write(user1, encoder);
-			datumWriter.write(user2, encoder);     
+			for(int i=1;i<=users.size();i++){
+				
+				
+				if(i%2==0){
+					System.out.println("user1==" + users.get(i-1));
+					datumWriter.write(users.get(i-1), encoder);
+					
+					encoder.flush();
+					
+					byte[] serializedBytes = out.toByteArray();
+					KeyedMessage<String, byte[]> message = new KeyedMessage<String, byte[]>("test_222", serializedBytes);
+
+					System.out.println("message:" + new String(message.message()));
+					producer.send(message);
+					
+					out = new ByteArrayOutputStream();
+					encoder = EncoderFactory.get().binaryEncoder(out, null);
+					
+				}else if(i != users.size()){
+					System.out.println("user2==" + users.get(i-1));
+					datumWriter.write(users.get(i-1), encoder);
+				} else {
+					System.out.println("user3==" + users.get(i-1));
+					datumWriter.write(users.get(i-1), encoder);
+					encoder.flush();
+					
+					byte[] serializedBytes = out.toByteArray();
+					KeyedMessage<String, byte[]> message = new KeyedMessage<String, byte[]>("test_222", serializedBytes);
+
+					System.out.println("message:" + new String(message.message()));
+					producer.send(message);
+					//producer.send(message);
+				}
+			}
+
+			//datumWriter.write(user1, encoder);
+			//datumWriter.write(user2, encoder);     
 			
-			encoder.flush();
+			//encoder.flush();
 		    out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-	    byte[] serializedBytes = out.toByteArray();
+	   // byte[] serializedBytes = out.toByteArray();
 	    
-	    KeyedMessage<String, byte[]> message = new KeyedMessage<String, byte[]>("topic_user_avro1", serializedBytes);
-	   // List<KeyedMessage<String, byte[]>> messages = new ArrayList<KeyedMessage<String, byte[]>>();
-	    
-        producer.send(message);
+	   // KeyedMessage<String, byte[]> message = new KeyedMessage<String, byte[]>("topic_user_avro1", serializedBytes);
+      //  producer.send(message);
         
         
         System.out.println("耗时:" + (System.currentTimeMillis() - start));
