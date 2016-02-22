@@ -15,7 +15,7 @@ import kafka.message.MessageAndMetadata;
 public class CosumerMain {
 
 	public static void main(String[] arg) {
-        String[] args = { "slave02.infobird.com:2181", "group-1", "topic_test_10000"};
+        String[] args = { "slave02.infobird.com:2181", "group-1", "topic_7"};
         String zookeeper = args[0];
         String groupId = args[1];
         String topic = args[2];
